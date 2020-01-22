@@ -22,7 +22,7 @@ class ContactScreen extends StatefulWidget {
 class ChatScreenState extends State<ContactScreen> {
 
   List<Item> list = List<Item>();
-  Iterable<Contact> contacts;
+  List<Contact> contacts;
 
   @override
   void initState() {

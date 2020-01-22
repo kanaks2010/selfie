@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -201,6 +202,16 @@ class CameraScreenState extends State<CameraScreen>
     );
   }
 
+  Future<dynamic> readFileAsync(String filePath) async {
+    File imageFile = new File(filePath);
+    List<int> imageBytes = imageFile.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+    print(base64Image);
+    Clipboard.setData(new ClipboardData(text: base64Image));
+
+    return (base64Image);
+  }
+
   Future<FileSystemEntity> getLastImage() async {
     final Directory extDir = await getApplicationDocumentsDirectory();
     final String dirPath = '${extDir.path}/media';
@@ -213,6 +224,7 @@ class CameraScreenState extends State<CameraScreen>
     var lastFile = _images[0];
     var extension = path.extension(lastFile.path);
     if (extension == '.jpeg') {
+      readFileAsync(lastFile.path);
       return lastFile;
     } else {
       /*String thumb = await Thumbnails.getThumbnail(
